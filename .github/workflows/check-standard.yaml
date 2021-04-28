@@ -56,14 +56,20 @@ jobs:
           key: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-1-${{ hashFiles('.github/depends.Rds') }}
           restore-keys: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-1-
 
-      - name: Install system dependencies
+      - name: Install Linux dependencies
         if: runner.os == 'Linux'
         run: |
+          sudo apt-get install libnetcdf-dev libnetcdff-dev
           while read -r cmd
           do
             eval sudo $cmd
           done < <(Rscript -e 'writeLines(remotes::system_requirements("ubuntu", "20.04"))')
 
+      - name: Install macOS dependencies
+        if: runner.os == 'macOS'
+        run: |
+          brew install netcdf
+          
       - name: Install dependencies
         run: |
           remotes::install_deps(dependencies = TRUE)

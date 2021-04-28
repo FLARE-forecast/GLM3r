@@ -24,7 +24,8 @@
 #' }
 #'@importFrom utils packageName
 #'@export
-run_glm <- function(sim_folder = '.', nml_file = "glm3.nml", verbose=TRUE, system.args=character()) {
+run_glm <- function(sim_folder = '.', nml_file = "glm3.nml", verbose = TRUE,
+                    system.args = character()) {
 	
   # Check for nml file in sim_folder
 	if(!nml_file %in% list.files(sim_folder)){
@@ -76,12 +77,10 @@ glm.systemcall <- function(sim_folder, glm_path, verbose, system.args) {
   tryCatch({
     if (verbose){
       out <- system2(glm_path, wait = TRUE, stdout = "", 
-                     stderr = "", args = system.args, 
-                     env = paste0("DYLD_LIBRARY_PATH=", glm_path))
+                     stderr = "", args = system.args)
     } else {
       out <- system2(glm_path, wait = TRUE, stdout = NULL, 
-                     stderr = NULL, args = system.args, 
-                     env = paste0("DYLD_LIBRARY_PATH=", glm_path))
+                     stderr = NULL, args = system.args)
     }
     setwd(origin)
     return(out)
@@ -93,23 +92,27 @@ glm.systemcall <- function(sim_folder, glm_path, verbose, system.args) {
 
 ### Windows ###
 run_glm3.0_Win <- function(sim_folder, verbose, system.args){
-    glm_path <- system.file('extbin/glm-3.0.5_x64/glm.exe', package=packageName())
+    glm_path <- system.file('extbin/glm-3.0.5_x64/glm.exe', package = packageName())
     glm.systemcall(sim_folder, glm_path, verbose, system.args)
 }
 
 ### macOS ###
 run_glm3.0_OSx <- function(sim_folder, verbose, system.args){
   glm_path <- system.file('exec/macglm3', package = 'GLM3r')
+  Sys.setenv(DYLD_LIBRARY_PATH = paste(system.file('extbin/nixGLM', 
+                                               package = packageName()), 
+                                   Sys.getenv('DYLD_LIBRARY_PATH'), 
+                                   sep = ":"))
   glm.systemcall(sim_folder = sim_folder, glm_path = glm_path, verbose = verbose, system.args = system.args)
 }
 
 ### Linux ###
 run_glmNIX <- function(sim_folder, verbose, system.args){
-  glm_path <- system.file('exec/nixglm', package=packageName())
+  glm_path <- system.file('exec/nixglm', package = packageName())
   
-  Sys.setenv(LD_LIBRARY_PATH=paste(system.file('extbin/nixGLM', 
-                                         package=packageName()), 
-                                   Sys.getenv('LD_LIBRARY_PATH'), 
+  Sys.setenv(DYLD_LIBRARY_PATH = paste(system.file('extbin/nixGLM', 
+                                         package = "GLM3r"), 
+                                   Sys.getenv('DYLD_LIBRARY_PATH'), 
                                    sep = ":"))
   glm.systemcall(sim_folder, glm_path, verbose, system.args)
 

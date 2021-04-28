@@ -99,8 +99,8 @@ run_glm3.0_Win <- function(sim_folder, verbose, system.args){
 ### macOS ###
 run_glm3.0_OSx <- function(sim_folder, verbose, system.args){
   glm_path <- system.file("exec/macglm3", package = packageName())
-  Sys.setenv(DYLD_LIBRARY_PATH = paste(paste0(system.file("exec", 
-                                               package = "GLM3r"), "/"), 
+  Sys.setenv(DYLD_LIBRARY_PATH = paste(system.file("exec", 
+                                               package = "GLM3r"), 
                                    Sys.getenv("DYLD_LIBRARY_PATH"), 
                                    sep = ":"))
   glm.systemcall(sim_folder = sim_folder, glm_path = glm_path, verbose = verbose, system.args = system.args)

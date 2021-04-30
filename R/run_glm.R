@@ -83,7 +83,7 @@ glm.systemcall <- function(sim_folder, glm_path, verbose, system.args) {
                        stderr = "", args = system.args, env = paste0("DYLD_LIBRARY_PATH=", dylib_path))
       } else {
         out <- system2(glm_path, wait = TRUE, stdout = NULL, 
-                       stderr = NULL, args = system.args)
+                       stderr = NULL, args = system.args, env = paste0("DYLD_LIBRARY_PATH=", dylib_path))
       }
     })
   } else {

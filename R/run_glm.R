@@ -85,6 +85,11 @@ glm.systemcall <- function(sim_folder, glm_path, verbose, system.args) {
         out <- system2(glm_path, wait = TRUE, stdout = NULL, 
                        stderr = NULL, args = system.args, env = paste0("DYLD_LIBRARY_PATH=", dylib_path))
       }
+    }, error = function(err) {
+      print(paste("GLM_ERROR:  ",err))
+    }, finally = {
+      setwd(origin)
+      return(out)
     })
   } else {
     tryCatch({
@@ -95,11 +100,11 @@ glm.systemcall <- function(sim_folder, glm_path, verbose, system.args) {
         out <- system2(glm_path, wait = TRUE, stdout = NULL, 
                        stderr = NULL, args = system.args)
       }
-      setwd(origin)
-      return(out)
     }, error = function(err) {
       print(paste("GLM_ERROR:  ",err))
+    }, finally = {
       setwd(origin)
+      return(out)
     })
   }
 }

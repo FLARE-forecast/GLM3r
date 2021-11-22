@@ -91,7 +91,22 @@ glm.systemcall <- function(sim_folder, glm_path, verbose, system.args) {
       setwd(origin)
       return(out)
     })
-  } else { 
+  } else if(.Platform$pkgType == "win.binary"){
+    tryCatch({
+      if (verbose){
+        out <- system2(glm_path, wait = TRUE, stdout = "", 
+                       stderr = "", args = system.args)
+      } else {
+        out <- system2(glm_path, wait = TRUE, stdout = NULL, 
+                       stderr = NULL, args = system.args)
+      }
+    }, error = function(err) {
+      print(paste("GLM_ERROR:  ",err))
+    }, finally = {
+      setwd(origin)
+      return(out)
+    })    
+    }else { 
     dylib_path <- system.file("exec", package = packageName())  
     tryCatch({
       if (verbose){

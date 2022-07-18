@@ -34,7 +34,7 @@ run_glm <- function(sim_folder = ".", nml_file = "glm3.nml", verbose = TRUE,
 	
   nml_arg <- paste0("--nml ", nml_file)
 
-  system.args <- c(nml_arg, no_gui, system.args)
+  system.args <- c(nml_arg, system.args)
   
 	### Windows ###
 	if(.Platform$pkgType == "win.binary"){

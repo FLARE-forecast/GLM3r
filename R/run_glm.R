@@ -33,7 +33,8 @@ run_glm <- function(sim_folder = ".", nml_file = "glm3.nml", verbose = TRUE,
 	}
 	
   nml_arg <- paste0("--nml ", nml_file)
-  system.args <- c(nml_arg, system.args)
+
+  system.args <- c(nml_arg, no_gui, system.args)
   
 	### Windows ###
 	if(.Platform$pkgType == "win.binary"){
@@ -49,7 +50,7 @@ run_glm <- function(sim_folder = ".", nml_file = "glm3.nml", verbose = TRUE,
       stop("pre-mavericks mac OSX is not supported. Consider upgrading")
     }
     
-    return(run_glm3.0_OSx(sim_folder, verbose, system.args))
+    return(run_glm3.0_OSx(sim_folder, verbose, c(system.args,"--no-gui")))
    
   }
     

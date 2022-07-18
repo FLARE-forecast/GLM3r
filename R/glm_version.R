@@ -13,7 +13,7 @@
 #'
 #'@export
 glm_version <- function(){
-	.run_glm(dirname(nml_template_path()), verbose = TRUE, system.args='--help')
+	.run_glm(dirname(nml_template_path()), verbose = TRUE, system.args='-help --no-gui')
 }
 
 .run_glm <- function(sim_folder = ".", nml_file = "glm3.nml", verbose = TRUE,
